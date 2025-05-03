@@ -10,6 +10,7 @@ from dotenv import load_dotenv # To load .env file for token
 from config import config
 from cogs.admin import permissions
 from utils import db_utils
+from utils import embed_utils
 from cogs.events import on_message as message_event
 from cogs.events import on_reaction as reaction_event
 from cogs.admin import data_tools as admin_data_tools

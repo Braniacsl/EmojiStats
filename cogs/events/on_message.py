@@ -1,4 +1,5 @@
 import discord
+import discord.ext.commands as commands
 import sqlite3
 import re
 import logging
@@ -27,9 +28,9 @@ def is_unicode_emoji(char):
     )
 
 # Define the on_message event listener
-async def on_message(message: discord.Message, bot: discord.ext.commands.Bot):
+async def on_message(message: discord.Message):
     # Ignore messages from the bot itself
-    if message.author == bot.user:
+    if message.author.bot:
         return
 
     # Ignore DMs if the bot is guild-focused
@@ -41,6 +42,7 @@ async def on_message(message: discord.Message, bot: discord.ext.commands.Bot):
         return
 
     # Get DB connection from the bot instance
+    bot = message._state._get_client()
     db_conn = getattr(bot, "db_conn", None)
     if not db_conn:
         log.error(f"Database connection not found on bot instance in on_message for guild {message.guild.id}")
@@ -77,9 +79,7 @@ async def on_message(message: discord.Message, bot: discord.ext.commands.Bot):
     # Allow other event listeners (like commands) to process the message
     await bot.process_commands(message)
 
-# Setup function to register the on_message event listener
-async def setup(bot: discord.ext.commands.Bot):
-    """Sets up the on_message event listener."""
-    # Register the on_message event listener
+async def setup(bot: commands.Bot):
+    """Registers the on_message event listener."""
     bot.event(on_message)
-    log.info("On_message event handler setup complete.")
+    log.info("On_message event handler registered.")

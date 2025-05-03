@@ -80,7 +80,7 @@ async def paginate_and_send(interaction: discord.Interaction, title: str, all_da
             return create_error_embed("Invalid page number requested.")
 
     initial_embed = get_page_embed(1)
-    view = PaginatorView(interaction.user, total_pages, get_page_embed) if total_pages > 1 else None
+    view = PaginatorView(interaction.user, total_pages, get_page_embed) if total_pages > 1 else discord.ui.View()
 
     # Send ephemeral response
     if interaction.response.is_done():

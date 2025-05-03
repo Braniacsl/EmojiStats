@@ -1,4 +1,5 @@
 import discord
+import discord.ext.commands as commands
 import sqlite3
 import logging
 # Import from project
@@ -42,9 +43,7 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.User | disco
         # Update the count in the reactions table
         db_utils.update_count(db_conn, guild_id, "reactions", emoji_identifier)
 
-# Setup function to register the on_reaction_add event listener
-async def setup(bot: discord.ext.commands.Bot):
-    """Sets up the on_reaction_add event listener."""
-    # Register the on_reaction_add event listener
+async def setup(bot: commands.Bot):
+    """Registers the on_message event listener."""
     bot.event(on_reaction_add)
-    log.info("On_reaction_add event handler setup complete.")
+    log.info("On_message event handler registered.")
