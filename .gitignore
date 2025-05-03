@@ -1,0 +1,16 @@
+# Secrets
+.env
+
+# Database
+data/emoji_stats.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS files
+.DS_Store
+echo "EmojiUtilities/" >> .gitignore
