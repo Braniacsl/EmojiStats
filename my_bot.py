@@ -84,18 +84,25 @@ async def on_ready():
     log.info("Registering commands and event handlers...")
     try:
         # Setup event handlers (pass bot instance)
-        message_event.setup(bot)
-        reaction_event.setup(bot)
+        # message_event.setup(bot)
+        # reaction_event.setup(bot)
 
         # Register Slash Commands (pass bot instance)
-        await admin_data_tools.setup(bot)
-        await help.setup(bot)
-        await emoji.setup(bot)
-        await reaction.setup(bot)
-        await sticker.setup(bot)
+        # await admin_data_tools.setup(bot)
+        # await help.setup(bot)
+        # await emoji.setup(bot)
+        # await reaction.setup(bot)
+        # await sticker.setup(bot)
 
         log.info("Command and event handler registration complete.")
         log.info("Use the `!sync` command (admin only) to sync slash commands if needed.")
+        
+        response = await bot.tree.sync()
+
+        if not response:
+            raise Exception("Failed to sync commands with bot.")
+        else:
+            log.info("Successfully synced commands.")
 
     except Exception as e:
         log.critical(f"Error during setup of commands/events: {e}", exc_info=True)
@@ -106,6 +113,7 @@ async def on_ready():
 @bot.command(name="sync", hidden=True)
 @permissions.is_admin_sync() # Restrict to users with Administrator permission
 async def sync(ctx: commands.Context, guild_id: int = None):
+    log.info("in")
     """Manually syncs slash commands (Admin Only)."""
     sync_emoji = config.EMOJI_MAP.get("sync", "🔄")
     error_emoji = config.EMOJI_MAP.get("error", "❌")
@@ -211,10 +219,28 @@ async def on_guild_join(guild: discord.Guild):
     except Exception as e:
         log.error(f"Exception during table setup for new guild {guild.name}: {e}")
 
+async def register_commands():
+    log.info("Loading commands...")
+    try:
+        # Load extensions (commands and events)
+        await bot.load_extension("cogs.events.on_message")
+        await bot.load_extension("cogs.events.on_reaction")
+        await bot.load_extension("cogs.admin.data_tools")
+        await bot.load_extension("cogs.commands.help")
+        await bot.load_extension("cogs.commands.emoji_commands")
+        await bot.load_extension("cogs.commands.reaction_commands")
+        await bot.load_extension("cogs.commands.sticker_commands")
+        log.info("All commands loaded successfully.")
+    except Exception as e:
+        log.critical(f"Error during loading of commands: {e}", exc_info=True)
+
+
+
 # --- Main Execution Guard (Production Mode) ---
 if __name__ == "__main__":
     log.info("Starting bot in PRODUCTION MODE...")
     try:
+        asyncio.run(register_commands())
         bot.run(BOT_TOKEN)
     except discord.errors.LoginFailure:
         log.critical("Failed to log in: Invalid Discord Bot Token provided.")
