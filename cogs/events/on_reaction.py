@@ -10,6 +10,7 @@ log = logging.getLogger(__name__)
 
 # Define the on_reaction_add event listener
 async def on_reaction_add(reaction: discord.Reaction, user: discord.User | discord.Member):
+    log.info("in reaction")
     # Ignore reactions added by the bot itself
     if user == reaction.message.author or user.bot:
         return
@@ -42,6 +43,8 @@ async def on_reaction_add(reaction: discord.Reaction, user: discord.User | disco
         log.debug(f"Found reaction: {emoji_identifier} added by {user} in guild {guild_id}")
         # Update the count in the reactions table
         db_utils.update_count(db_conn, guild_id, "reactions", emoji_identifier)
+    else:
+        log.error("no emoji identifier")
 
 async def setup(bot: commands.Bot):
     """Registers the on_message event listener."""

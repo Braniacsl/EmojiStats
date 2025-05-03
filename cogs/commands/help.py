@@ -16,7 +16,7 @@ async def help_command(interaction: discord.Interaction):
     await interaction.response.defer(ephemeral=True)
 
     embed = discord.Embed(
-        title=f"{config.EMOJI_MAP.get('info', 'ℹ️')} AdriBot Commands",
+        title=f"{config.EMOJI_MAP.get('info', 'ℹ️')} EmojiStats Bot Commands",
         description="Here are the available commands:",
         color=discord.Color.blue()
     )
