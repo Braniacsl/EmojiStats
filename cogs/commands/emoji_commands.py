@@ -117,7 +117,6 @@ async def emoji_rare(interaction: discord.Interaction, limit: app_commands.Range
 @permissions.is_emoji_police() # Apply permission check
 async def emoji_history(interaction: discord.Interaction):
     """Displays the full history of emoji usage, paginated."""
-    log.info("in")
     if not interaction.guild:
         await interaction.response.send_message("This command can only be used in a server.", ephemeral=True)
         return

@@ -42,7 +42,7 @@ class ConfirmationView(discord.ui.View):
     async def on_timeout(self):
         """Handle view timeout."""
         # Check if self.children is available and not empty
-        if hasattr(self, children) and self.children:
+        if hasattr(self, 'children') and self.children:
             # Disable all buttons on timeout
             for item in self.children:
                 item.disabled = True
@@ -118,7 +118,7 @@ class PaginatorView(discord.ui.View):
     async def on_timeout(self):
         """Handle view timeout by disabling buttons."""
         # Check if self.children is available and not empty
-        if hasattr(self, children) and self.children:
+        if hasattr(self, 'children') and self.children:
             for item in self.children:
                 item.disabled = True
             # Try to edit the original message if an interaction context is available

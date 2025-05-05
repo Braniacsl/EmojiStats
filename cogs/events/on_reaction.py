@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 async def on_reaction_add(reaction: discord.Reaction, user: discord.User | discord.Member):
     log.info("in reaction")
     # Ignore reactions added by the bot itself
-    if user == reaction.message.author or user.bot:
+    if user == user.bot:
         return
 
     # Ignore reactions in DMs if the bot is guild-focused
